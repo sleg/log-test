@@ -1,13 +1,13 @@
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.pem
+# /.env.local
+# /.env.local.php
+# /.env.*.local
+# /config/secrets/prod/prod.decrypt.private.pem
 /public/bundles/
 /var/
 /vendor/
 
-.env
-.env.test
+# .env
+# .env.test
 
 .idea/
 .DS_Store
