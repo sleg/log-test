@@ -1,0 +1,39 @@
+services: 
+  # Main app
+  app:
+    build: .
+    ports:
+      - "8081:8000"
+    volumes:
+      - ./:/log-app
+      - vendor:/log-app/vendor
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      MESSENGER_TRANSPORT_DSN: amqp://dev:dev@rabbitmq:5672/%2f
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+
+  # Rabbit container
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: dev
+      RABBITMQ_DEFAULT_PASS: dev
+      RABBITMQ_DEFAULT_VHOST: /
+
+  # Elastic container
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+
+volumes:
+  vendor:

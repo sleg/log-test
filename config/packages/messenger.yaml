@@ -1,0 +1,26 @@
+framework:
+  messenger:
+    routing:
+      App\Messaging\LogIngestedMessage: logs_transport
+      
+    transports:
+      logs_transport:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        options:
+          exchange:
+            name: logs
+            type: direct
+            flags: 2
+          queues:
+            logs.ingest:
+              flags: 2
+              binding_keys: [logs.ingest]
+              arguments:
+                x-max-priority: 10
+
+when@test:
+  framework:
+    messenger:
+      transports:
+        logs_transport:
+          dsn: 'in-memory://'
